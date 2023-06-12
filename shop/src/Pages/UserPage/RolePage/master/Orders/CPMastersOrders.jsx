@@ -10,12 +10,15 @@ import "../../../../../components/css/fix.css"
 
 export default function CPMastersOrders(){
     const dispatch = useDispatch()
+    let params = (new URL(document.location)).searchParams;
+    let all1 = params.get('all');
     const [name, setName] = useState("")
     const [modalActive, setModalActive] = useState("")
     const [products,setProducts] = useState([]);
     const [currentPage,setCurrenPage] = useState(0);
     const [countPage,setCountPage] = useState(1);
     const [fetching, setFetching] = useState(false)
+    const [all, setAll] = useState(all1?all1:"")
     const productsList = products?.map(product => <Products key={product._id} product={product} setProducts={setProducts} products={products}/>)
     const user=useSelector(state =>state.user.currentUser)
     console.log(user.id)
@@ -27,7 +30,7 @@ export default function CPMastersOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,true)
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true, 2,all)
 
             }
         }
@@ -49,10 +52,19 @@ export default function CPMastersOrders(){
         }
 
     }
+    function filtr(){
+        getOrders(0, setCurrenPage, setFetching, [], setProducts, setCountPage, 0,true,2,all)
+
+    }
     return(
         <div className='Orders-block'>
             <div className="Orders-block-allign">
                 <div className={"shortList"}>
+                    <div className="searchBlock">
+                        <div className="searchBox">
+                            <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
+                        </div>
+                    </div>
                     {productsList}
                     {fetching===true && currentPage + 1 <= countPage ?<div style={{width:'100%',height:'200px'}} className="product-wrapper"><div className={"loading1"}/></div>:<div/> }
                 </div>

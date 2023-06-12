@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import {NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import '../../../../../components/css/shortProduct.css'
-import plug from "../../../../../components/image/Заглушка.png";
-import {acceptOrder, allReadyOrder, deleteOrder} from "../../../../../actions/order";
-import UniversalModal from '../../../../../components/universalModal';
+import '../../../../components/css/shortProduct.css'
+import plug from "../../../../components/image/Заглушка.png";
+import {acceptOrder, allReadyOrder, completeOrder, deleteOrder} from "../../../../actions/order";
+import UniversalModal from '../../../../components/universalModal';
 import {useState} from 'react';
-import {baseServerUrl} from "../../../../../globalSetings";
+import {baseServerUrl} from "../../../../globalSetings";
 
 const Orders=({product,setProducts,products,masters})=>{
     const [modalActive, setModalActive] = useState("")
@@ -75,23 +75,46 @@ const Orders=({product,setProducts,products,masters})=>{
                        
                        
                         <div className='buttons_redact_delete'>
+
+
+                            <button className={'btn-delete'} onClick={()=>setModalActive(true)}>Удалить</button>
+                            
                             <NavLink to={'/Order/'+product._id}>
                                 <button className={'btn-redact'} >Открыть</button>
                             </NavLink>
                         </div>
      <div className='buttons_redact_delete'>
 
+         {!master ?
+             <div>
+                 <select id="mySelect" value={selectedMaster} onChange={handleSelectChange}>
+                     <option value="">-- Выберите --</option>
+                     {masters?.map(master => <option value={master._id}>{master.name}</option>)}
+                 </select>
+                 <button className={'btn-delete'} onClick={() => {acceptOrder(product._id, setStatus, setMaster,selectedMaster);console.log(status, master)}}>Присвоить мастера</button>
+             </div>
+             :
+             status == "Завершена"?
+                 <div/>:
+             <button className={'btn-delete'} onClick={() => {acceptOrder(product._id, setStatus, setMaster,null);console.log(status, master)}}>Снять мастера</button>
+         }
 
                              {status == "Выполнена" ?
                                  <button className={'btn-delete'} onClick={() => {allReadyOrder(product._id, setStatus);console.log(status, master)}}>Возобновить</button>
+
                                  :
                                  status == "В работе"?
                                      <button className={'btn-delete'} onClick={() => {allReadyOrder(product._id, setStatus);console.log(status, master)}}>Сдать заявку</button>
                                 :
                                      <div/>
                              }
+         {status == "Выполнена" ?
+             <button className={'btn-delete'} onClick={() => {completeOrder(product._id, setStatus);console.log(status, master)}}>Завершить</button>
+             :
+             <div/>
+         }
 
-                        </div>
+             </div>
                     </div>
                 </div>
             </div>

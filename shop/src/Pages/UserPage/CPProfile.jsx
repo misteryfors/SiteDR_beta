@@ -12,6 +12,7 @@ export default function CPProfile(){
     const [password, setPassword] = useState("******")
     const [phone, setPhone] = useState(user.phone)
     const [name, setName] = useState(user.name)
+    const [telegram, setTelegram] = useState(user.telegram)
     const dispatch = useDispatch()
     const [modalActive, setModalActive] = useState("")
     console.log(useParams())
@@ -20,7 +21,7 @@ export default function CPProfile(){
             <UniversalModal
                 active={modalActive} setActive={setModalActive}
                 trueBtn={'Да'} falseBtn={'Нет'}
-                trueFunction={() => {dispatch(ChangAccountInformation(email, password, phone, name));setModalActive(false)}} falseFunction={()=>setModalActive(false)}
+                trueFunction={() => {dispatch(ChangAccountInformation(email, password, phone, name,telegram));setModalActive(false)}} falseFunction={()=>setModalActive(false)}
                 trueLink={''} falseLink={''}
                 message={'Вы действительно хотите внести изменения?'}/>
             <div className='Profile-block'>
@@ -32,6 +33,8 @@ export default function CPProfile(){
             <Input  value={phone} setValue={setPhone} type="text" placeholder="Введите телефон..."/>
             <p>Изменить Имя:</p>
             <Input  value={name} setValue={setName} type="text" placeholder="Введите Имя..."/>
+            <p>Изменить чат telegram</p>
+            <Input  value={telegram} setValue={setTelegram} type="text" placeholder="Введите id из telegram"/>
 
             
             <button className='change-btn'  onClick={()=>setModalActive(true)}>Изменить</button>

@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import UniversalModal from "../../../../components/universalModal";
 import {useState} from 'react';
 
-const AdminPage = () => {
+const MainAdminPage = () => {
     const isAuth = useSelector(state => state.user.isAuth)
     const [modalActive, setModalActive] = useState("")
     const dispatch = useDispatch()
@@ -29,9 +29,8 @@ const AdminPage = () => {
                         <NavLink to="chats"><button className={"MainButton"}><p>Чаты</p></button></NavLink>
                         <NavLink to="products"><button className={"MainButton"}><p>Продукты</p></button></NavLink>
                         <NavLink to="adminPanel"><button className={"MainButton"}><p>Добавить мастера</p></button></NavLink>
-                        <NavLink to="allOrders"><button className={"MainButton"}><p>Все Заказы</p></button></NavLink>
-                        <NavLink to="newOrders"><button className={"MainButton"}><p>Новые Заказы</p></button></NavLink>
-                        <NavLink to="readyOrders"><button className={"MainButton"}><p>Выполненные Заказы</p></button></NavLink>
+                        <NavLink to="allorders"><button className={"MainButton"}><p>Все Заказы</p></button></NavLink>
+                        <NavLink to="orders"><button className={"MainButton"}><p>Заказы</p></button></NavLink>
                         <NavLink to="myOrders"><button className={"MainButton"}><p>Мои Заказы</p></button></NavLink>
                         
                         <button className={"MainButton"} onClick={()=>setModalActive(true)}>Выход</button>
@@ -48,4 +47,4 @@ const AdminPage = () => {
 
     )
 }
-export {AdminPage};
+export {MainAdminPage};

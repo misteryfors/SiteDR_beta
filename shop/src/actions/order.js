@@ -76,14 +76,16 @@ export const getOrder = (orderId,setMainImg, setAdress, setFio, setPhone, setTyp
         }
     }
 }
-export const sendOrderMessage = (chat,message,order,user,messages, setMessages) => {
+export const sendOrderMessage = (chat,message,order,user,messages, setMessages, name, change) => {
     return async dispatch => {
         console.log(chat,message,order)
         try {
             const response = await axios.post(baseServerUrl+`/api/order/sendMessage`, {
                 chat,
+                name,
                 message,
-                user
+                user,
+                change,
             })
 
             setMessages([...messages, response.data.message])
@@ -129,14 +131,29 @@ export const redactOrder = async (id,adress, fio, phone, type, mark, timeInUse, 
         //alert(e.response.data.message)
     }
 }
-export async function acceptOrder (id,setStatus,setMaster) {
+export async function acceptOrder (id,setStatus,setMaster,master) {
     try {
-        const response = await axios.get(baseServerUrl+`/api/order/acceptOrder?id=${id}`, {
+        const response = await axios.get(baseServerUrl+`/api/order/acceptOrder?id=${id}&master=${master}`, {
             headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
         if (response.data.order) {
             console.log(response.data.order)
             //setOrders(orders.filter(order => order._id != response.data.order._id))
             setMaster(response.data.order.responsible)
+            setStatus(response.data.order.status)
+        }
+
+    } catch (e) {
+        alert(e.response.data.message)
+    }
+}
+export async function completeOrder (id,setStatus) {
+    try {
+        const response = await axios.get(baseServerUrl+`/api/order/completeOrder?id=${id}`, {
+            headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+        if (response.data.order) {
+            console.log(response.data.order)
+            //setOrders(orders.filter(order => order._id != response.data.order._id))
+
             setStatus(response.data.order.status)
         }
 
@@ -175,10 +192,24 @@ export function uploadFile(file, UID) {
         }
     }
 }
-export async function getOrders(currentPage,setCurrenPage,setFetching,products,setProducts,setCountPage,pageCount,revers,user,all) {
+export async function getMasters(masters,setMasters) {
     try {
-        console.log(user)
-        let url=baseServerUrl+`/api/order/getOrders?currentPage=${currentPage+1}&revers=${revers}&user=${user}&all=${all}`
+
+        let url=baseServerUrl+`/api/order/getMasters`
+        const response = await axios.get(url,
+            {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+        )
+        console.log(response.data)
+        setMasters(response.data)
+        return url
+    } catch (e) {
+        //alert(e)
+    }
+}
+export async function getOrders(currentPage,setCurrenPage,setFetching,products,setProducts,setCountPage,pageCount,revers,type,all) {
+    try {
+
+        let url=baseServerUrl+`/api/order/getOrders?currentPage=${currentPage+1}&revers=${revers}&type=${type}&all=${all}`
         const response = await axios.get(url,
             {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
         ).finally(()=>setFetching(false))

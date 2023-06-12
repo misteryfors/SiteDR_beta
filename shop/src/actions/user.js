@@ -93,9 +93,12 @@ export const auth =  () => {
         }
     }
 }
-export async function addMaster(email)  {
+export async function addMaster(email,role)  {
         try {
-            const response = await axios.get(baseServerUrl+`/api/auth/addMaster?email=${email}`,
+            console.log(role)
+
+
+            const response = await axios.get(baseServerUrl+`/api/auth/addMaster?email=${email}&role=${role}`,
                 {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
             )
             alert(response.data.message)
@@ -104,7 +107,7 @@ export async function addMaster(email)  {
             alert(e.response.data.message)
         }
 }
-export const ChangAccountInformation =  (email, password,phone,name) => {
+export const ChangAccountInformation =  (email, password,phone,name,telegram) => {
     return async dispatch => {
         try {
             const response = await axios.post(baseServerUrl+`/api/auth/changeacc`, {
@@ -112,7 +115,8 @@ export const ChangAccountInformation =  (email, password,phone,name) => {
                 email,
                 password,
                 phone,
-                name
+                name,
+                telegram
             })
             console.log(response.data)
             dispatch(setUser(response.data.user))

@@ -1,25 +1,27 @@
 import React, {useEffect,useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getProducts} from "../../../../../actions/product";
+import {getProducts} from "../../../../actions/product";
 import Products from "./Orders";
-import Modal from "../../../Orders/modal";
-import {getOrders} from "../../../../../actions/order";
-import "../../../../../components/css/fix.css"
+import Modal from "../../Orders/modal";
+import {getMasters, getOrders} from "../../../../actions/order";
+import "../../../../components/css/fix.css"
+import {NavLink} from "react-router-dom";
 
 
 
-export default function CPClientsOrders(){
+export default function NewOrders(){
     const dispatch = useDispatch()
     let params = (new URL(document.location)).searchParams;
     let all1 = params.get('all');
     const [name, setName] = useState("")
     const [modalActive, setModalActive] = useState("")
     const [products,setProducts] = useState([]);
+    const [masters,setMasters] = useState([]);
     const [currentPage,setCurrenPage] = useState(0);
     const [countPage,setCountPage] = useState(1);
     const [fetching, setFetching] = useState(false)
     const [all, setAll] = useState(all1?all1:"")
-    const productsList = products?.map(product => <Products key={product._id} product={product} setProducts={setProducts} products={products}/>)
+    const productsList = products?.map(product => <Products key={product._id} product={product} setProducts={setProducts} products={products} masters={masters}/>)
     const user=useSelector(state =>state.user.currentUser)
     console.log(user.id)
     useEffect(()=> {
@@ -30,8 +32,8 @@ export default function CPClientsOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,2,all)
-
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,3,all)
+                getMasters(masters,setMasters)
             }
         }
 
@@ -53,7 +55,7 @@ export default function CPClientsOrders(){
 
     }
     function filtr(){
-        getOrders(0, setCurrenPage, setFetching, [], setProducts, setCountPage, 0,true,2,all)
+        getOrders(0, setCurrenPage, setFetching, [], setProducts, setCountPage, 0,true,3,all)
 
     }
     return(
@@ -73,4 +75,4 @@ export default function CPClientsOrders(){
         </div>
     )
 }
-export {CPClientsOrders};
+export {NewOrders};

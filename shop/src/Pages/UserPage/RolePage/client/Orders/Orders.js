@@ -48,15 +48,7 @@ const Orders=({product,setProducts,products})=>{
 
                         <div className='Products-short-allign-item-flex-info'>
                             <div className='status-desc'>
-                            Статус:
-                                {product.chek ?
-                                    <span><p> В работе</p></span>
-                                    :
-                                    !status?
-                                    <span><p> В обработке</p></span>
-                                        :
-                                        <span><p> {status}</p></span>
-                                }
+                                Статус:<span><p> {status}</p></span>
 
                             </div>
                             <div className='status-desc'>
@@ -80,7 +72,7 @@ const Orders=({product,setProducts,products})=>{
                         <div className='buttons_redact_delete'>
 
                             <NavLink to={'/Order/'+product._id}>
-                                <button className={'btn-redact'} >Изменить</button>
+                                <button className={'btn-redact'} >Открыть</button>
                             </NavLink>
                         </div>
                         <div className='buttons_redact_delete'>

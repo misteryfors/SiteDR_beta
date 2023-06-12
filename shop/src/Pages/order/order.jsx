@@ -26,8 +26,21 @@ const Order = () => {
     const [time, setTime] = useState(Date.now+1)
     const [imgs, setImgs] = useState([])
     const [user, setUser] = useState('')
-    const currentUser=useSelector(state =>state.user.currentUser.id)
+    const currentUser=useSelector(state =>state.user.currentUser)
     const [urgency,setUrgency] = useState(false)
+
+
+    const [inputEnabledAdress, setInputEnabledAdress] = useState(false)
+    const [inputEnabledfio, setInputEnabledFio] = useState(false)
+    const [inputEnabledPhone, setInputEnabledPhone] = useState(false)
+    const [inputEnabledType, setInputEnabledType] = useState(false)
+    const [inputEnabledMark, setInputEnabledMark] = useState(false)
+    const [inputEnabledTimeInUse, setInputEnabledTimeInUse] = useState(false)
+    const [inputEnabledComment, setInputEnabledComment] = useState(false)
+    const [inputEnabledTime, setInputEnabledTime] = useState(false)
+    const [inputEnabledUser, setInputEnabledUser] = useState(false)
+    const [inputEnabledUrgency,setInputEnabledUrgency] = useState(false)
+    const [first,setFirst] = useState("")
     const loads=true
 
     const order = useSelector(state =>state.order)
@@ -36,7 +49,7 @@ const Order = () => {
     const [dragEnter, setDragEnter] = useState(false)
     const [chat, setChat] = useState("")
     const [messages, setMessages] = useState([])
-    const messageList = messages?.map(msg => <Message key={msg._id} message={msg} user={msg.user==chat.firstUser ? chat.firstUserName : chat.secondUserName} pos={msg.user==currentUser ? 'message right':'message left'}/>)
+    const messageList = messages?.map(msg => <Message key={msg._id} message={msg} user={msg.name} pos={msg.user==currentUser.id ? 'message right':'message left'}/>)
     const [currentMessage, setCurrentMessage] = useState("")
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,10 +89,38 @@ const Order = () => {
         console.log(messages)
         console.log(messageList)
         console.log(chat)
-        dispatch(sendOrderMessage(chat,currentMessage,null,currentUser,messages,setMessages))
+        dispatch(sendOrderMessage(chat,currentMessage,null,currentUser.id,messages,setMessages,currentUser.name+" "+currentUser.role,false))
 
         setCurrentMessage("")
     }
+    function lockAll(save) {
+        setFirst(save.toString())
+        setInputEnabledAdress(false)
+        setInputEnabledFio(false)
+        setInputEnabledPhone(false)
+        setInputEnabledType(false)
+        setInputEnabledMark(false)
+        setInputEnabledTimeInUse(false)
+        setInputEnabledComment(false)
+        setInputEnabledTime(false)
+        setInputEnabledUser(false)
+        setInputEnabledUrgency(false)
+    }
+    function save() {
+        redactOrder(id,adress, fio, phone, type, mark, timeInUse, comment, urgency, new Date(time).toISOString(), imgs)
+    }
+    function redact(atribute,first,second)
+    {
+        console.log(atribute)
+        console.log(first)
+        console.log(second)
+        if (first!=second)
+        {
+        dispatch(sendOrderMessage(chat,"Изменено "+atribute+" | "+first+" => "+second+" |",null,currentUser.id,messages,setMessages,currentUser.name+" "+currentUser.role,true))
+        save()
+        }
+    }
+
     useEffect(() => {
         //dispatch(getChats(user))
         dispatch(getOrder(id,setMainImg, setAdress, setFio,setPhone, setType, setMark, setTimeInUse, setComment, setTime, setImgs, setUrgency,setUser,setMessages,setChat))
@@ -141,9 +182,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={fio}
-                                        onChange={(e) => setFio(e.target.value)}
+                                        onChange={(e) => inputEnabledfio && setFio(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledfio ?redact("ФИО",first,fio): lockAll(fio);  setInputEnabledFio(!inputEnabledfio)}}>
+                                        {inputEnabledfio ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="name2 form-inpt">
                                     <label>Адресс</label>
@@ -151,9 +195,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={adress}
-                                        onChange={(e) => setAdress(e.target.value)}
+                                        onChange={(e) => inputEnabledAdress && setAdress(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledAdress ? redact("Адрес",first,adress):lockAll(adress) ;setInputEnabledAdress(!inputEnabledAdress)}}>
+                                        {inputEnabledAdress ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="name2 form-inpt">
                                     <label>Телефон</label>
@@ -161,9 +208,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
+                                        onChange={(e) => inputEnabledPhone && setPhone(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledPhone ? redact("Телефон",first,phone):lockAll(phone); setInputEnabledPhone(!inputEnabledPhone)}}>
+                                        {inputEnabledPhone ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="Type form-inpt">
                                     <label>Тип</label>
@@ -171,9 +221,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={type}
-                                        onChange={(e) => setType(e.target.value)}
+                                        onChange={(e) => inputEnabledType && setType(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledType?  redact("Тип",first,type):lockAll(type);setInputEnabledType(!inputEnabledType)}}>
+                                        {inputEnabledType ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="Mark form-inpt">
                                     <label>Марка</label>
@@ -181,9 +234,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={mark}
-                                        onChange={(e) => setMark(e.target.value)}
+                                        onChange={(e) => inputEnabledMark && setMark(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledMark ?redact("Марка",first,mark) :lockAll(mark); setInputEnabledMark(!inputEnabledMark)}}>
+                                        {inputEnabledMark ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="Mark form-inpt">
                                     <label>удобное время для прибытия</label>
@@ -192,9 +248,12 @@ const Order = () => {
                                         type="datetime-local"
                                         className="input"
                                         value={time.toString()}
-                                        onChange={(e) => setTime(e.target.value)}
+                                        onChange={(e) => inputEnabledTime && setTime(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={(time1)=>{inputEnabledTime ? redact("Время прибытия",first,time.toString()) :lockAll(time.toString()); setInputEnabledTime(!inputEnabledTime);console.log(time)}}>
+                                        {inputEnabledTime ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="Mark form-inpt">
                                     <label>Время эксплуатации оборудывания</label>
@@ -202,9 +261,12 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={timeInUse}
-                                        onChange={(e) => setTimeInUse(e.target.value)}
+                                        onChange={(e) => inputEnabledTimeInUse && setTimeInUse(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledTimeInUse ? redact("Время в использовании",first,timeInUse) :lockAll(timeInUse); setInputEnabledTimeInUse(!inputEnabledTimeInUse)}}>
+                                        {inputEnabledTimeInUse ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
                                 <div className="fullDescription form-inpt">
                                     <label>Комментарий</label>
@@ -212,15 +274,18 @@ const Order = () => {
                                         type="text"
                                         className="input"
                                         value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
+                                        onChange={(e) => inputEnabledComment && setComment(e.target.value)}
                                         required
                                     />
+                                    <button className="btnToggleInput" onClick={()=>{inputEnabledComment ?redact("Комментарий",first,comment) :lockAll(comment); setInputEnabledComment(!inputEnabledComment)}}>
+                                        {inputEnabledComment ? "Выключить ввод" : "Включить ввод"}
+                                    </button>
                                 </div>
 
                                 <div className="Save-btn">
                                     <a>
                                     <button className={"btnSave"}
-                                            onClick={() => redactOrder(id,adress, fio, phone, type, mark, timeInUse, comment, urgency, new Date(time).toISOString(), imgs)}>Сохранить
+                                            onClick={() => save()}>Сохранить
                                     </button>
                                     </a>
                                 </div>
