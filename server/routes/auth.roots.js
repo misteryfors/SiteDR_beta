@@ -46,7 +46,7 @@ router.post('/registration',
 
         }
         const hashPassword =await bcrypt.hash(password, 15)
-        const newUser = new User({email,password: hashPassword,role:"client",name:email,notice:'Вы успешно зарегистрированны',confirmed:false})
+        const newUser = new User({email,password: hashPassword,role:"client",name:email,notice:'Вы успешно зарегистрированны',confirmed:false,telegram:null})
         await newUser.save()
         const token = jwt.sign({id: newUser.id}, config.get("secretKey"), {expiresIn: "2h"})
 
@@ -113,7 +113,8 @@ router.post('/confirm',
                             id: candidate.id,
                             email: candidate.email,
                             role: candidate.role,
-                            avatar: candidate.avatar
+                            avatar: candidate.avatar,
+                            telegram: candidate.telegram
                         }
                     })
                 }
@@ -157,7 +158,8 @@ router.post('/login',
                     role: user.role,
                     avatar: user.avatar,
                     phone: user.phone,
-                    name: user.name
+                    name: user.name,
+                    telegram: user.telegram
                 }
             })
         } catch (e) {
@@ -199,9 +201,9 @@ router.get('/addMaster', authMiddleware,
             {
                 console.log("=======aaaa====")
                 let user1=await User.findOne({name: "artem.novickov@mail.ru"});
-                let user2=await User.findOneAndUpdate({email: req.query.email},{$set:{role:'master'}})
+                let user2=await User.findOneAndUpdate({email: req.query.email},{$set:{role:req.query.role}})
                 console.log(user1)
-                return res.status(400).json({message: "Мастер создан"})
+                return res.status(400).json({message: req.query.role+" создан"})
             }
             else {
                 console.log("=======bbbb===")
@@ -245,11 +247,11 @@ router.post('/ChangeAcc',
             console.log(req.body.password)
             if (req.body.password=="******" || req.body.password=="*****" || req.body.password=="****" || req.body.password=="***" || req.body.password=="**" || req.body.password=="*" || req.body.password=="")
             {console.log(1)
-                await User.updateOne({_id: jwt.decode(req.body.Firsttoken).id},{$set: {email : req.body.email, phone:req.body.phone, name: req.body.name}})}
+                await User.updateOne({_id: jwt.decode(req.body.Firsttoken).id},{$set: {email : req.body.email, phone:req.body.phone, name: req.body.name,telegram:req.body.telegram}})}
             else
             {
                 console.log(2)
-                await User.updateOne({_id: jwt.decode(req.body.Firsttoken).id},{$set: {email : req.body.email,password: await bcrypt.hash(req.body.password, 15), phone:req.body.phone, name: req.body.name}})
+                await User.updateOne({_id: jwt.decode(req.body.Firsttoken).id},{$set: {email : req.body.email,password: await bcrypt.hash(req.body.password, 15), phone:req.body.phone, name: req.body.name, telegram:req.body.telegram}})
             }
             const user = await User.findOne({_id: jwt.decode(req.body.Firsttoken).id})
             console.log(user,jwt.decode(req.body.Firsttoken).id)
@@ -263,7 +265,8 @@ router.post('/ChangeAcc',
                     role: user.role,
                     avatar: user.avatar,
                     phone: user.phone,
-                    name: user.name
+                    name: user.name,
+                    telegram: user.telegram
                 }
             })
         } catch (e) {

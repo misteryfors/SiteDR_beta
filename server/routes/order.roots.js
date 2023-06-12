@@ -14,6 +14,7 @@ const OrderChat = require("../models/orderChat.js");
 const Chat = require("../models/chat");
 const Message = require("../models/message");
 const OrderMessage =require("../models/orderMessage")
+const {ObjectId} = require("mongoose");
 router.post('/upload', fileController.uploadFile)
 router.post('/createOrder',
     [
@@ -35,8 +36,9 @@ router.post('/createOrder',
             const sUser = await User.findOne({_id:'647abf547718cac675e1aaaf'})
             const orderChat = new OrderChat({order:order._id,firstUser:req.body.user,secondUser:'647abf547718cac675e1aaaf',firstUserName:fUser.name,secondUserName:sUser.name,chekFirstUser:false,chekSecondUser:false})
             await orderChat.save();
-            await User.updateOne({_id: '647abf547718cac675e1aaaf'},{notice:'Новый заказ'})
-            tgController.send(1759163276, 'Новый заказ! \nАдресс: '+adress+'\nФио: '+ fio+'\nТелефон: '+ phone+'\nТип: '+ type+'\nМарка: '+ mark+'\nВремя в использовании: '+ timeInUse+'\nКомментарий: '+ comment+'\nСрочная: '+ urgency +'\nЖелательное время: '+ time);
+            await User.updateOne({_id: '647abf547718cac675e1aaaf'},{notice:'Новая'})
+            if (sUser.telegram!=null)
+            tgController.send(sUser.telegram, 'Новый заказ! \nАдресс: '+adress+'\nФио: '+ fio+'\nТелефон: '+ phone+'\nТип: '+ type+'\nМарка: '+ mark+'\nВремя в использовании: '+ timeInUse+'\nКомментарий: '+ comment+'\nСрочная: '+ urgency +'\nЖелательное время: '+ time);
             return res.json({order})
         }catch (e){
             console.log(e)
@@ -90,33 +92,77 @@ router.post('/commentOrder',
     })
 
 const ItemsPerPage=12
+router.get('/getMasters',authMiddleware,
+    async (req, res) => {
+
+        console.log('-------------------------------------------------')
+        console.log(req.query)
+        try {
+            let fUser = await User.findOne({_id:req.user.id})
+
+            if (fUser.role=="admin") {
+                console.log(111)
+                query = {};
+
+
+                masters = await User.find({role:"master"})
+                return res.json(masters)
+            }
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: "Can not get files"})
+        }
+    })
 router.get('/getOrders',authMiddleware,
     async (req, res) => {
         const page=req.query.currentPage || 1
         console.log('-------------------------------------------------')
-        console.log(req.query)
+        console.log(req.query.type)
         try {
             let fUser = await User.findOne({_id:req.user.id})
             let query={};
             console.log(req.query.all)
             console.log(fUser)
-            if (fUser.role=="admin" && req.query.all=='true')
-            {
-                console.log(111)
-                query={};
+            switch (req.query.type) {
+                case "1":
+                    console.log(111)
+                    query={};
+                    break;
+                case "2":
+                    console.log(222)
+                    console.log("=-=-=-=-==--=-=-=aaaaaaaaaa=--=-=")
+                    query={$or:[{user:req.user.id},{master:req.user.id}]};
+                    break;
+                case "3":
+                    console.log(333)
+                    query={status:"Новая"};
+                    break;
+                case "4":
+                    console.log(444)
+                    query={status:"Завершена"};
+                    break;
+                default:
+                    console.log("Значение не соответствует ни одному из вариантов");
+                    break;
             }
-            else
-            if (req.user.id && req.query.user=='true')
-            {
-                console.log(222)
-                console.log("=-=-=-=-==--=-=-=aaaaaaaaaa=--=-=")
-                query={$or:[{user:req.user.id},{master:req.user.id}]};
-            }
-            else
-            {
-                console.log(333)
-                query={master:null};
-            }
+            query = {
+                $and: [
+                    query,
+                    {
+                        $or: [
+                            { adress: { $regex: req.query.all, $options: "i" } },
+                            { fio: { $regex: req.query.all, $options: "i" } },
+                            { phone: { $regex: req.query.all, $options: "i" } },
+                            { type: { $regex: req.query.all, $options: "i" } },
+                            { mark: { $regex: req.query.all, $options: "i" } },
+                            { timeInUse: { $regex: req.query.all, $options: "i" } },
+                            { comment: { $regex: req.query.all, $options: "i" } },
+                            { status: { $regex: req.query.all, $options: "i" } },
+                            { responsible: { $regex: req.query.all, $options: "i" } }
+                        ]
+                    }
+                ]
+            };
             const count = await Order.find(query).count()
             const pageCount = Math.ceil(count / ItemsPerPage)
 
@@ -131,10 +177,11 @@ router.get('/getOrders',authMiddleware,
             let products;
             console.log("======================================");
             console.log(req.query);
+            console.log(req.query.all)
             console.log(req.user.id);
 
                 products = await Order.find(query).skip(skip>=0?skip:0).limit(skip>=0?ItemsPerPage:ItemsPerPage+skip)
-
+            console.log(query,products)
             return res.json({pagination:{count,pageCount},products})
         } catch (e) {
             console.log(e)
@@ -178,37 +225,74 @@ router.get('/acceptOrder',authMiddleware,
     async (req, res) => {
         try {
             const user = await User.findOne({_id: req.user.id})
-            if(user.role=='admin' || user.role=='master') {
+            if(user.role=='admin' || user.role=='mainAdmin') {
                 const order1 = await Order.findOne({_id:req.query.id})
                 let order;
-                if (order1.master && order1.master!=null) {
+                if (req.query.master=="null") {
                     console.log(order1.master)
                     console.log(req.user.id)
-                    if (order1.master = req.user.id) {
                         console.log(1)
                         await Order.findOneAndUpdate({_id: req.query.id}, {
                             $set: {
                                 master: null,
                                 responsible: null,
-                                status: null
+                                status: "Новая"
                             }
                         })
 
-                    } else {
-                        console.log(2)
-                        return res.status(500).json({message: "Заказ уже занят"})
-                    }
+
                 }
                 else
                 {
+                    let fUser = await User.findOne({_id:req.query.master})
                     console.log(3)
                     await Order.findOneAndUpdate({_id: req.query.id}, {
                         $set: {
-                            master: req.user.id,
-                            responsible: user.name,
-                            status:"в работе"
+                            master: fUser.id,
+                            responsible: fUser.name,
+                            status:"В работе"
                         }
                     })
+                }
+                order = await Order.findOne({_id: req.query.id})
+                return res.json({order})
+            }
+            else
+            {
+                return res.status(500).json({message: "No authorizated req"})
+            }
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: "Can not get files"})
+        }
+    })
+
+router.get('/completeOrder',authMiddleware,
+    async (req, res) => {
+        try {
+            const user = await User.findOne({_id: req.user.id})
+            if(user.role=='admin' || user.role=='mainAdmin') {
+                const order1 = await Order.findOne({_id:req.query.id})
+                let order;
+                if (order1.master && order1.master!=null) {
+                        console.log(1)
+                        if (order1.status=="Выполнена") {
+                            await Order.findOneAndUpdate({_id: req.query.id}, {
+                                $set: {
+                                    status: "Завершена"
+                                }
+                            })
+                        }
+                        else
+                        {
+                            return res.status(500).json({message: "Заказ ещё не выполнен"})
+                        }
+
+
+                }
+                else
+                {
+                    return res.status(500).json({message: "Заказ ещё не в работе"})
                 }
                 order = await Order.findOne({_id: req.query.id})
                 return res.json({order})
@@ -233,10 +317,10 @@ router.get('/allReadyOrder',authMiddleware,
                 if (order1.master && order1.master!=null) {
                     if (order1.master = req.user.id) {
                         console.log(1)
-                        if (order1.status=="в работе") {
+                        if (order1.status=="В работе") {
                             await Order.findOneAndUpdate({_id: req.query.id}, {
                                 $set: {
-                                    status: "Готов к сдаче"
+                                    status: "Выполнена"
                                 }
                             })
                         }
@@ -244,7 +328,7 @@ router.get('/allReadyOrder',authMiddleware,
                         {
                             await Order.findOneAndUpdate({_id: req.query.id}, {
                                 $set: {
-                                    status: "в работе"
+                                    status: "В работе"
                                 }
                             })
                         }
@@ -278,7 +362,7 @@ router.post('/sendMessage',
             //console.log(req.body)
             const chat1 = await OrderChat.findOne({_id:req.body.chat})
             console.log(chat1)
-            const message1 = await new OrderMessage({user:req.body.user, date:new Date(), order:req.body.order, message:req.body.message,chat:chat1,chek:false})
+            const message1 = await new OrderMessage({user:req.body.user,name:req.body.name, date:new Date(), order:req.body.order, message:req.body.message,chat:chat1,chek:false, change:req.body.change})
             await message1.save()
             console.log(222222222)
             console.log(req.body.chat)
@@ -286,15 +370,24 @@ router.post('/sendMessage',
             console.log(chat1)
             if (chat1.firstUser==req.body.user)
             {
-                if(!req.body.order)
-                    tgController.send(1759163276, 'нововедение в заказе ');
+                let order=await Order.findOneAndUpdate({_id:chat1.order},{$set:{status:"В работе"}})
+                if (order.master!=null) {
+                    let master = await User.findById(order.master)
+                    console.log(order)
+                    console.log(master)
+                    if (master.telegram!=null)
+                    tgController.send(master.telegram, 'ответ на запрос в заказе ');
+                }
                 await User.updateOne({_id: chat1.secondUser},{notice:'нововедение в заказе'})
+
+                //console.log(or)
                 await OrderChat.updateOne({_id:chat1._id},{chekSecondUser:false})
             }
 
             else
             {
-                await User.updateOne({_id: chat1.firstUser},{notice:'нововедение в заказе'})
+                await User.updateOne({_id: chat1.firstUser},{notice:'Запрос информации о заказе'})
+                let or=await Order.findOneAndUpdate({_id:chat1.order},{$set:{status:"Запрос информации"}})
                 await OrderChat.updateOne({_id:chat1._id},{chekFirstUser:false})
             }
 
