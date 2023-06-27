@@ -1,0 +1,121 @@
+.Modal {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    z-index: 999;
+}
+
+.ModalYesNo{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    z-index: 2;
+    
+}
+
+
+.inputikcreate{
+    background-Color:#e8e2f0;
+    width:94%;
+    height:50px;
+    border:1px solid black;
+}
+
+.adddbtn{
+    width: 100%;
+}
+
+.Modal.active .addproducttt{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Modal2 {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    transform: scale(0);
+    z-index: 500;
+}
+
+.Modal__content{
+    padding: 20px;
+    border-radius: 12px;
+    background-color: white;
+    height: 50%;
+    width: 70%;
+    z-index: 150;
+}
+
+.YesNoContentBtn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+    justify-content: space-evenly;
+}
+
+.YesNoContentBtn a{
+    height: 30px;
+}
+
+.YesNoContentBtn a button{
+    background-color: white;
+    padding: 5px 20px;
+    border: 2px solid rgb(171, 171, 171);
+    transition: 0.33s ease-in;
+}
+
+.YesNoContentBtn a button:hover{
+    background-color: #e3e3e3;
+    cursor: pointer ;
+    border: 2px solid rgb(0, 0, 0);
+    transition: 0.33s ease-in;
+}
+
+.YesNoContent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "deff";
+    font-size: 1.2rem;
+    padding: 2%;
+}
+
+.Modal__contentYesNo{
+    padding: 20px;
+    border-radius: 12px;
+    background-color: white;
+    width: 70%;
+    z-index: 150;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.Modal.active{
+    transform: scale(1);
+}
+.Modal2.active2{
+    transform: scale(1);
+}

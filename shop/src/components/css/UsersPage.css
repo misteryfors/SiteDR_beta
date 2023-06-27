@@ -1,0 +1,48 @@
+.MainButton{
+    width: 100%;
+    height: 50px;
+    background: #e8e8e8;
+    border: 0;
+    position: relative;
+    line-height: 50px;
+    text-align: center;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MainButton:hover{
+    background-color: #bababa;
+    cursor: pointer;
+}
+
+.createprod{
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.MinorButton{
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
+    left: -10px;
+    width: 350px;
+    height: 100px;
+    background-color: #ffffff;
+    margin: 10px;
+    display: block;
+    border: 1px solid #000000;
+    border-radius: 0px 50px 50px 0px;
+    position: relative;
+    line-height: 100%;
+    text-align: center;
+    font-size: 30px;
+}
+
+.bigger a{
+    width: 100%;
+}
+
+.bigger .active{
+    background-color: #e3e3e3;
+    text-decoration: underline;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}

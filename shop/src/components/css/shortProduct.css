@@ -1,0 +1,276 @@
+.ShortProductsSlot{
+  width: 100%;
+  top: 200px;
+
+}
+.ShortProductsSlot .product-wrapper{
+  position: relative;
+    width: 100%;
+
+
+  transition: .2s;
+}
+@media  only screen and (min-width: 450px) {
+  .ShortProductsSlot .product-wrapper{
+    width: 100%;
+  }
+  .ShortProductsSlot .product{
+    height: 100px;
+  }
+  .ShortProductsSlot .product .short {
+    height: 3.0em;
+  }
+}
+
+.ShortProductsSlot{
+  margin-bottom: 2%;
+}
+
+.ShortProductsSlot .product .imageBox{
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  left: -1px;
+  top: -1px;
+
+}
+.ShortProductsSlot .product img{
+
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.ShortProductsSlot .product .short{
+  width: 100px;
+  position: relative;
+  margin: 5px;
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.4em;
+  overflow: hidden;
+}
+.ShortProductsSlot .product .short:after{
+  content: '';
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8em;
+  height: 1.6em;
+  background: linear-gradient(to left top, #fff, rgba(255,255,255,0));
+}
+.ShortProductsSlot .product .name{
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.4em;
+  overflow: hidden;
+
+}
+.ShortProductsSlot .product .price{
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.4em;
+}
+.ShortProductsSlot .productBlock{
+  position: relative;
+}
+.ShortProductsSlot .product .btn-redact{
+  margin: 10px;
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.4em;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 30px;
+}
+.ShortProductsSlot .product .btn-delete{
+  margin: 10px;
+  text-align: center;
+  font-size: 1em;
+  line-height: 1.4em;
+  overflow: hidden;
+  background: #f63434;
+  border: 1px solid #000000;
+  border-radius: 30px;
+}
+
+.Products-short-allign-item .imageBox img{
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.Products-short-allign-item{
+  background-color: #fff;
+  border-radius: 10px;
+  flex-direction: column;
+  text-align: left;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+}
+
+.Products-short-allign-item-flex{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Products-short-allign-item-flex-info{
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.btn-delete{
+  height: 30px;
+  background-color: white;
+  margin-bottom: 10%;
+}
+
+.status-desc, .name-desc, .price-desc{
+  text-align: left;
+  width: 100%;
+}
+
+.buttons_redact_delete{
+  width: 100%;
+  z-index: 201;
+}
+
+.btn-delete:hover{
+  background: #f63434;
+  cursor: pointer;
+}
+
+.btn-redact:hover{
+  background-color: steelblue;
+  cursor: pointer;
+}
+
+.Products-short-allign-item a{
+  display: flex;
+  height: 20px;
+}
+
+.btn-redact{
+  background-color: white;
+  height: 30px;
+}
+
+.btn-del{
+  background-color: white;
+  height: 30px;
+}
+
+.buttons_redact_delete{
+  display: flex;
+  flex-direction: row;
+  padding: 0 20px;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+@media (max-width:4000px){
+  .Products-short-allign-item{
+    flex-direction: column;
+    height: auto;
+    padding: 2% 0;
+  }
+
+  .buttons_redact_delete{    
+    width: 100%;
+    margin-top: 5%;
+    flex-direction: row;
+  }
+
+  .name-desc, .price-desc, .status-desc, .date-desc{
+    width: 90%;
+    margin-bottom: 2%;
+    text-align: left;
+
+  }
+
+  .status-desc{
+    display: flex;
+  }
+
+  .status-desc span , .date-desc span{
+    margin-left: 5px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .name-desc span, .price-desc span{
+    font-weight: bold;
+  }
+
+  .Products-short-allign-item .imageBox img{
+    height: 250px;
+    width: 250px;
+  }
+
+  .price-desc br{
+    display: none;
+  } 
+
+  .Products-short-allign-item-flex{
+    flex-direction: column;
+  }
+
+  .btn-delete{
+    height: 50px;
+    width: 40%;
+    font-size: 1rem;
+    border: 2px solid black;
+    margin-bottom: 2%;
+  }
+
+  .btn-reserve{
+    height: 50px;
+    width: 87%;
+    font-size: 1rem;
+    border: 2px solid black;
+    margin-bottom: 4%;
+    z-index: 201;
+  }
+
+  .btn-reserve:hover{
+    cursor: pointer;
+    color: black;
+    background: rgb(251, 249, 145);
+  }
+
+
+  .btn-redact{
+    width: 100%;
+    height: 50px;
+    font-size: 1rem;
+    border: 2px solid black;
+  }
+
+  .btn-reserve, .btn-redact, .btn-delete{
+    border-radius: 10px;
+  }
+
+  .Products-short-allign-item a{
+    width: 40%;
+    height: 50px;
+  }
+
+  .UpLink{
+    left: 90%;
+  }
+}

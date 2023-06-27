@@ -1,0 +1,45 @@
+.searchBlock{
+    display: block;
+    width: 85%;
+    height: 100px;
+    display:flex;
+    align-Items:center;
+    justify-Content: space-between;
+}
+.searchBox{
+    width: 85%;
+    height: 60px;
+    border-radius: 0px;
+    display: flex;
+    border: 1px solid #00000078;
+    background-color: white;
+}
+.filter{
+    width: 60px;
+    height: 100%;
+
+}
+.search{
+    width: 100%;
+    border-radius: 0px;
+    background-color: rgb(223, 223, 223);
+    border-radius: 5px;
+}
+
+.search:hover{
+    background-color: #cbcbcb;
+}
+.searchButton{
+    width: 60px;
+    height: 60px;
+
+}
+
+@media (max-width:820px){
+    .searchBlock{
+        width: 100%;
+        margin-top: 80px;
+        height: 80px;
+    }
+}
+

@@ -1,0 +1,33 @@
+.product-card {
+    width: 300px;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.product-img {
+    width: 100%;
+}
+
+.product-name {
+    margin: 10px 0;
+}
+
+.product-type, .product-mark, .product-price {
+    margin: 5px 0;
+}
+
+.product-description, .product-short-description {
+    margin: 10px 0;
+}
+
+.product-buttons {
+    text-align: center;
+}
+
+.add-to-cart-btn, .more-info-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}

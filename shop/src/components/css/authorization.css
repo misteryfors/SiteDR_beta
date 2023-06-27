@@ -1,0 +1,89 @@
+.authorization{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    align-self: center;
+    border-bottom: 4px solid black;    
+}
+.authorization__header {
+    font-size: 30px;
+    font-weight: 700;
+}
+.authorization input {
+    margin: 10px 20px;
+    display: flex;
+    height: 25px;
+    border-radius: 0px;
+}
+
+.authorization input:hover{
+    background-color: #e3e3e3;
+}
+
+.authorization input:active{
+    border: 0px;
+}
+
+.authorization__btn {
+    border: none;
+    background-color: #000000;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    padding: 5px 10px;
+
+    margin-top: 10px;
+}
+
+.Allign{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0000006e;
+}
+
+.login_block{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-log-reg2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 1rem;
+}
+
+
+.buttons-log-reg{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1rem;
+}
+
+.authorization__btn,.buttons-log-reg button {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.buttons-log-reg button:hover, .authorization__btn:hover{
+    background-color: #394861;
+    cursor: pointer;
+}
+
+@media (max-width:820px){
+    .authorization{
+        width: 100%;
+        
+        height: 100%;
+        justify-content: center;
+        padding: 0;
+    }
+}
