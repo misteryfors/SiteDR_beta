@@ -76,13 +76,25 @@ export default function Routs(){
                             <Route path="orders" element={<CPOrders/>}/>
                             <Route path="myOrders" element={<CPMastersOrders/>}/>
                         </Route>
-                        :
+                        :role==="client" ?
                     <Route path="/User" element={<ClientPage/>}>
                         <Route path="profile" element={<CPProfile/>}/>
                         <Route path="chats" element={<CPChats/>}/>
                         <Route path="products" element={<CPProducts/>}/>
                         <Route path="myOrders" element={<CPClientsOrders/>}/>
                     </Route>
+                            :
+                            <Route path="/User" element={<Navigate to="/login" />}>
+                                <Route path="profile" element={<Navigate to="/login" />}/>
+                                <Route path="chats" element={<Navigate to="/login" />}/>
+                                <Route path="products" element={<Navigate to="/login" />}/>
+                                <Route path="orders" element={<Navigate to="/login" />}/>
+                                <Route path="allOrders" element={<Navigate to="/login" />}/>
+                                <Route path="readyOrders" element={<Navigate to="/login" />}/>
+                                <Route path="newOrders" element={<Navigate to="/login" />}/>
+                                <Route path="adminPanel" element={<Navigate to="/login" />}/>
+                                <Route path="myOrders" element={<Navigate to="/login" />}/>
+                            </Route>
                 }
                 <Route path="Order/:id" element={<Order/>}/>
                 {isAuth ?<Route path="NewOrder" element={<NewOrder/>}/>:
