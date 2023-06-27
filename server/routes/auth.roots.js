@@ -28,7 +28,6 @@ router.post('/registration',
     ],
     async (req,res)=>{
     try {
-        console.log(req.body)
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({message:'Uncorrect request', errors})
@@ -43,21 +42,20 @@ router.post('/registration',
             }
             else
                 await User.deleteOne({email})
-
         }
         const hashPassword =await bcrypt.hash(password, 15)
         const newUser = new User({email,password: hashPassword,role:"client",name:email,notice:'Вы успешно зарегистрированны',confirmed:false,telegram:null})
         await newUser.save()
         const token = jwt.sign({id: newUser.id}, config.get("secretKey"), {expiresIn: "2h"})
-
-
+        console.log('===========================================')
+        console.log('https://master43.ru:443/confirm/' + token )
+        console.log('-------------------------------------------')
         const mailOptions = {
             from: 'master43dotru@mail.ru',
             to: email,
             subject: 'Подтверждение регистрации',
             html: '<div style="display: flex; flex-direction:column; width:100%; jucify-content:center; align-items: center; font-family: "MailSans";  font-size: 2vw; font-weight: bold; "> Пожалуйста, подтвердите ваш аккаунт. <a style="margin-top: 2%; border: 1px solid; padding: 10px; border-radius: 5px; text-decoration: none;" href="https://master43.ru:443/confirm/' + token + '">Ссылка для подтверждения</a></div>'
         };
-
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);
@@ -65,9 +63,7 @@ router.post('/registration',
                 console.log('Письмо успешно отправлено: ' + info.response);
             }
         });
-        return res.status(400).json({message: 'Отправленно подтверждение на почту '+email})
-
-
+        return res.json({message: 'Отправленно подтверждение на почту '+email})
     }catch (e){
         console.log(e)
     }
@@ -171,7 +167,6 @@ router.post('/login',
 router.get('/auth', authMiddleware,
     async (req, res) => {
         try {
-            console.log(req.user)
             const user = await User.findOne({_id: req.user.id})
             const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
             return res.json({
@@ -202,8 +197,11 @@ router.get('/addMaster', authMiddleware,
                 console.log("=======aaaa====")
                 let user1=await User.findOne({name: "artem.novickov@mail.ru"});
                 let user2=await User.findOneAndUpdate({email: req.query.email},{$set:{role:req.query.role}})
-                console.log(user1)
+                console.log(user2)
+                if (user2!=null)
                 return res.status(400).json({message: req.query.role+" создан"})
+                else
+                    return res.status(400).json({message:"пользователь "+ req.query.email +" небыл найден"})
             }
             else {
                 console.log("=======bbbb===")

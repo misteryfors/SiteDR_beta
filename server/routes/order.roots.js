@@ -29,7 +29,7 @@ router.post('/createOrder',
             const {adress, fio, phone, type, mark, timeInUse, comment, urgency, time, imgs} =req.body
             let user =req.body.user ? req.body.user: null
             console.log(adress, fio, phone, type, mark, timeInUse, comment, urgency, time, imgs, user)
-            const order = new Order({adress, phone, fio, type, mark, timeInUse, comment, urgency, time, imgs, user,chek:false,status:"Новая заявка",history:[]})
+            const order = new Order({adress, phone, fio, type, mark, timeInUse, comment, urgency, time, imgs, user,chek:false,status:"Новая",history:[]})
             console.log(order)
             await order.save()
             const fUser = await User.findOne({_id:req.body.user})
@@ -60,7 +60,7 @@ router.post('/redactOrder',
             }
             console.log(req.body.imgs)
             console.log(req.body)
-            const newOrder = await Order.updateOne({_id: req.body.id},{$set:{adress:req.body.adress, fio:req.body.fio, phone:req.body.phone, type:req.body.type, mark:req.body.mark, timeInUse:req.body.timeInUse, comment:req.body.comment, urgency:req.body.urgency, time:req.body.time, imgs:req.body.imgs,chek:false,master:null}})
+            const newOrder = await Order.updateOne({_id: req.body.id},{$set:{adress:req.body.adress, fio:req.body.fio, phone:req.body.phone, type:req.body.type, mark:req.body.mark, timeInUse:req.body.timeInUse, comment:req.body.comment, urgency:req.body.urgency, time:req.body.time, imgs:req.body.imgs,chek:false}})
             console.log(newOrder)
 
             return res.json({message:"Product was redacted"})
@@ -224,6 +224,8 @@ router.get('/deleteOrder',authMiddleware,
 router.get('/acceptOrder',authMiddleware,
     async (req, res) => {
         try {
+            console.log("-==================================---===")
+            console.log(3)
             const user = await User.findOne({_id: req.user.id})
             if(user.role=='admin' || user.role=='mainAdmin') {
                 const order1 = await Order.findOne({_id:req.query.id})
@@ -245,6 +247,7 @@ router.get('/acceptOrder',authMiddleware,
                 else
                 {
                     let fUser = await User.findOne({_id:req.query.master})
+                    console.log("-==================================---===")
                     console.log(3)
                     await Order.findOneAndUpdate({_id: req.query.id}, {
                         $set: {
@@ -253,6 +256,10 @@ router.get('/acceptOrder',authMiddleware,
                             status:"В работе"
                         }
                     })
+                    await User.updateOne({_id:req.query.master},{notice:'Вам назначен новый заказ!'})
+                    if (fUser.telegram!=null)
+                        tgController.send(fUser.telegram, 'Вам назначен новый заказ!');
+
                 }
                 order = await Order.findOne({_id: req.query.id})
                 return res.json({order})
@@ -282,6 +289,7 @@ router.get('/completeOrder',authMiddleware,
                                     status: "Завершена"
                                 }
                             })
+
                         }
                         else
                         {
@@ -370,7 +378,9 @@ router.post('/sendMessage',
             console.log(chat1)
             if (chat1.firstUser==req.body.user)
             {
+
                 let order=await Order.findOneAndUpdate({_id:chat1.order},{$set:{status:"В работе"}})
+                console.log(order)
                 if (order.master!=null) {
                     let master = await User.findById(order.master)
                     console.log(order)
@@ -387,7 +397,8 @@ router.post('/sendMessage',
             else
             {
                 await User.updateOne({_id: chat1.firstUser},{notice:'Запрос информации о заказе'})
-                let or=await Order.findOneAndUpdate({_id:chat1.order},{$set:{status:"Запрос информации"}})
+                console.log("p==========p=============p==============p")
+                console.log(await Order.findOneAndUpdate({_id:chat1.order},{$set:{status:"Запрос информации"}}))
                 await OrderChat.updateOne({_id:chat1._id},{chekFirstUser:false})
             }
 

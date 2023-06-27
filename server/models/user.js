@@ -8,8 +8,6 @@ const User = new Schema({
     phone:{type: String},
     name:{type: String},
     telegram:{type: String},
-    orders:[{type: ObjectId, ref:'Order'}],
-    shoppingСart:[{type: ObjectId, ref:'Product'}],
     confirmed:{type:Boolean},
     notice:{type: String}
 })

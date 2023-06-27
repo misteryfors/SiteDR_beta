@@ -60,8 +60,13 @@ router.post('/sendMessage',
             await message1.save()
             if (chat1.firstUser==req.body.user)
             {
+
                 if(!req.body.order)
-                tgController.send(1759163276, 'Вам сообщение! ');
+                {
+                    const fuser = await User.findOne({_id:chat1.secondUser})
+                    tgController.send(fuser.telegram, 'Вам сообщение! ');
+                }
+
                 await User.updateOne({_id: chat1.secondUser},{notice:'Вам сообщение'})
                 await Chat.updateOne({_id:chat1._id},{chekSecondUser:false})
             }
