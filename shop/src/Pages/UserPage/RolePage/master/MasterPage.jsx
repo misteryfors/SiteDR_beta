@@ -27,8 +27,6 @@ const MasterPage = () => {
                     <div className="bigger">
                         <NavLink to="profile"><button className={"MainButton"}><p>Профиль</p></button></NavLink>
                         <NavLink to="chats"><button className={"MainButton"}><p>Чаты</p></button></NavLink>
-                        <NavLink to="products"><button className={"MainButton"}><p>Продукты</p></button></NavLink>
-                        <NavLink to="orders"><button className={"MainButton"}><p>Заказы</p></button></NavLink>
                         <NavLink to="myOrders"><button className={"MainButton"}><p>Мои Заказы</p></button></NavLink>
                         
                         <button className={"MainButton"} onClick={()=>setModalActive(true)}>Выход</button>

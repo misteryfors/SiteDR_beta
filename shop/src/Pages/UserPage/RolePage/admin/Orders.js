@@ -85,14 +85,15 @@ const Orders=({product,setProducts,products,masters})=>{
                         </div>
      <div className='buttons_redact_delete'>
 
-         {!master ?
-             <div>
-                 <select id="mySelect" value={selectedMaster} onChange={handleSelectChange}>
+         {!master &&
+
+                 <select className={'btn-delete'} id="mySelect" value={selectedMaster} onChange={handleSelectChange}>
                      <option value="">-- Выберите --</option>
                      {masters?.map(master => <option value={master._id}>{master.name}</option>)}
-                 </select>
+                 </select>}
+         {!master ?
                  <button className={'btn-delete'} onClick={() => {acceptOrder(product._id, setStatus, setMaster,selectedMaster);console.log(status, master)}}>Присвоить мастера</button>
-             </div>
+
              :
              status == "Завершена"?
                  <div/>:
