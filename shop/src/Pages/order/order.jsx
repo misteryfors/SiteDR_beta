@@ -296,7 +296,7 @@ const Order = () => {
 
                     </form>
                     <div className='Chat-allign' style={{height:'600px'}}>
-                    <div className={"Chat"} style={{width:'1600px'}}>
+                    <div className={"Chat"} style={{width:'95%'}}>
                         <div className={"messageList"}>
                             {messageList}
                             <div className='Popusk'><a href="shop/src/Pages/UserPage/Chats/CPChats#downnibba">Вниз</a></div>
