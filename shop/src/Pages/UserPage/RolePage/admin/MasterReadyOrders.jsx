@@ -8,7 +8,7 @@ import "../../../../components/css/fix.css"
 
 
 
-export default function AllOrders(){
+export default function MasterReadyOrders(){
     const dispatch = useDispatch()
     let params = (new URL(document.location)).searchParams;
     let all1 = params.get('all');
@@ -31,7 +31,7 @@ export default function AllOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,1,all)
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,5,all)
                 getMasters(masters,setMasters)
             }
         }
@@ -54,7 +54,7 @@ export default function AllOrders(){
 
     }
     function filtr(){
-        getOrders(0, setCurrenPage, setFetching, [], setProducts, setCountPage, 0,true,1,all)
+        getOrders(0, setCurrenPage, setFetching, [], setProducts, setCountPage, 0,true,4,all)
 
     }
     return(
@@ -63,9 +63,7 @@ export default function AllOrders(){
                 <div className={"shortList"}>
                     <div className="searchBlock">
                         <div className="searchBox">
-                            <form onSubmit={filtr}>
                             <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
-                            </form>
                         </div>
                     </div>
                     {productsList}
@@ -76,4 +74,4 @@ export default function AllOrders(){
         </div>
     )
 }
-export {AllOrders};
+export {MasterReadyOrders};

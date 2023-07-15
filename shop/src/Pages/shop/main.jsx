@@ -94,8 +94,9 @@ const MainPage = () => {
             </Helmet>
                     <div className="searchBlock">
                         <div className="searchBox">
+                            <form onSubmit={filtr}>
                             <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
-
+                            </form>
                         </div>
 
                             <NavLink style={{width: '15%',marginLeft:'19px'}} to={'/NewOrder'}>

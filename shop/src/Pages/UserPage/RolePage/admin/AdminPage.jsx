@@ -31,7 +31,8 @@ const AdminPage = () => {
                         <NavLink to="adminPanel"><button className={"MainButton"}><p>Добавить мастера</p></button></NavLink>
                         <NavLink to="allOrders"><button className={"MainButton"}><p>Все Заказы</p></button></NavLink>
                         <NavLink to="newOrders"><button className={"MainButton"}><p>Новые Заказы</p></button></NavLink>
-                        <NavLink to="readyOrders"><button className={"MainButton"}><p>Выполненные Заказы</p></button></NavLink>
+                        <NavLink to="readyOrders"><button className={"MainButton"}><p>Завершённые Заказы</p></button></NavLink>
+                        <NavLink to="masterReadyOrders"><button className={"MainButton"}><p>Готовые к сдаче Заказы</p></button></NavLink>
                         <NavLink to="myOrders"><button className={"MainButton"}><p>Мои Заказы</p></button></NavLink>
                         
                         <button className={"MainButton"} onClick={()=>setModalActive(true)}>Выход</button>
