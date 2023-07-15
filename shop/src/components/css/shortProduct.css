@@ -220,6 +220,7 @@
   .Products-short-allign-item .imageBox img{
     height: 250px;
     width: 250px;
+    object-fit: cover; /* Добавлено свойство object-fit */
   }
 
   .price-desc br{

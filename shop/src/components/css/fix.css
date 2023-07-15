@@ -116,21 +116,22 @@ header{
     font-weight: bold;
 }
 
-.imageBox{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 350px;
-    width: 300px;
-}
+    .imageBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 350px;
+        width: 300px;
+    }
 
-.imageBox img{
-    height: 100%;
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
-    background-color: rgba(255, 255, 255, 0.479);
-}
+    .imageBox img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+        background-color: rgba(255, 255, 255, 0.479);
+        object-fit: cover; /* Добавлено свойство object-fit */
+    }
 
 .main-info{
     display: flex;
