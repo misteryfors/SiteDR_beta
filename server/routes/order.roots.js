@@ -141,6 +141,10 @@ router.get('/getOrders',authMiddleware,
                     console.log(444)
                     query={status:"Завершена"};
                     break;
+                case "5":
+                    console.log(444)
+                    query={status:"Выполнена"};
+                    break;
                 default:
                     console.log("Значение не соответствует ни одному из вариантов");
                     break;
