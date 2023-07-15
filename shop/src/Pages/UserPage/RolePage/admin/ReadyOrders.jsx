@@ -63,7 +63,17 @@ export default function ReadyOrders(){
                 <div className={"shortList"}>
                     <div className="searchBlock">
                         <div className="searchBox">
-                            <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
+                            <form onSubmit={(e) => {
+                                e.preventDefault(); // Предотвращаем перезагрузку страницы
+                                filtr(); // Вызываем вашу функцию
+                            }} style={{
+                                width:"100%",
+                                borderRadius: "0px",
+                                display: "flex",
+                                border: "1px solid #00000078",
+                                backgroundColor: "white"
+                            }}> <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
+                            </form>
                         </div>
                     </div>
                     {productsList}
