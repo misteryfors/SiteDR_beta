@@ -63,7 +63,10 @@ export default function AllOrders(){
                 <div className={"shortList"}>
                     <div className="searchBlock">
                         <div className="searchBox">
-                            <form onSubmit={filtr}>
+                            <form onSubmit={(e) => {
+                                e.preventDefault(); // Предотвращаем перезагрузку страницы
+                                filtr(); // Вызываем вашу функцию
+                            }}>
                             <input className="search" placeholder="Поиск" style={{outline:'none'}} onKeyDown={(e)=>{if (e.keyCode === 13) filtr()}}  value={all} onChange={(e) => setAll(e.target.value)}/>
                             </form>
                         </div>
