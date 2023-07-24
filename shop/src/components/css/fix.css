@@ -41,6 +41,13 @@ body::-webkit-scrollbar {
     height: auto;
     min-width: 170px;
 }
+    #filterBox2{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
 
 .HeaderNav{
     width: 200px;
