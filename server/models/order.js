@@ -17,7 +17,10 @@ const Order = new Schema({
     status:{type:String},
     responsible:{type:String},
     history:[{type:ObjectId}],
-    master:{type:ObjectId, ref:'User'}
+    master:{type:ObjectId, ref:'User'},
+    createTime:{type: Date, required:true},
+    privateComment:{type:String},
+
 })
 
 module.exports = model('Order', Order)
