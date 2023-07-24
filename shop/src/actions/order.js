@@ -46,7 +46,7 @@ export const createOrder = (chat,user,adress, fio, phone, type, mark, timeInUse,
 
     }
 }
-export const getOrder = (orderId,setMainImg, setAdress, setFio, setPhone, setType, setMark, setTimeInUse, setComment, setTime, setImgs, setUrgency, setUser, setMessages, setChat) => {
+export const getOrder = (orderId,setMainImg, setAdress, setFio, setPhone, setType, setMark, setTimeInUse, setComment, setTime, setImgs, setUrgency, setUser, setMessages, setChat,setPrivateComment) => {
     return async dispatch => {
         try {
             const response = await axios.get(baseServerUrl+`/api/order/getOrder?orderId=${orderId}`, {
@@ -66,6 +66,7 @@ export const getOrder = (orderId,setMainImg, setAdress, setFio, setPhone, setTyp
                     setUrgency(response.data.order.urgency)
                     setMessages(response.data.orderMessages)
                     setChat(response.data.orderChat._id)
+                    setPrivateComment(response.data.order.privateComment)
             console.log(response.data.orderChat)
             console.log(response.data.orderMessages)
             let user = response.data.order.user!=null?response.data.order.user:'undefined'
@@ -107,7 +108,7 @@ export async function deleteOrder (UID,setOrders,orders) {
             //alert(e.response.data.message)
         }
 }
-export const redactOrder = async (id,adress, fio, phone, type, mark, timeInUse, comment, urgency, time, imgs) => {
+export const redactOrder = async (id,adress, fio, phone, type, mark, timeInUse, comment, urgency, time, privateComment, imgs) => {
     try {
         console.log('nn eror')
         const response = await axios.post(baseServerUrl+`/api/order/redactOrder`, {
@@ -121,7 +122,8 @@ export const redactOrder = async (id,adress, fio, phone, type, mark, timeInUse, 
             comment,
             urgency,
             time,
-            imgs
+            imgs,
+            privateComment
         })
         console.log(response.data)
         console.log('no eror')
@@ -206,10 +208,10 @@ export async function getMasters(masters,setMasters) {
         //alert(e)
     }
 }
-export async function getOrders(currentPage,setCurrenPage,setFetching,products,setProducts,setCountPage,pageCount,revers,type,all) {
+export async function getOrders(currentPage,setCurrenPage,setFetching,products,setProducts,setCountPage,pageCount,revers,type,all,filt) {
     try {
 
-        let url=baseServerUrl+`/api/order/getOrders?currentPage=${currentPage+1}&revers=${revers}&type=${type}&all=${all}`
+        let url=baseServerUrl+`/api/order/getOrders?currentPage=${currentPage+1}&revers=${revers}&type=${type}&all=${all}&adress=${filt.adress?filt.adress:""}&fio=${filt.fio?filt.fio:""}&mark=${filt.mark?filt.mark:""}&phone=${filt.phone?filt.phone:""}&typs=${filt.type?filt.type:""}&privateComment=${filt.privateComment?filt.privateComment:""}&responsible=${filt.responsible?filt.responsible:""}`
         const response = await axios.get(url,
             {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
         ).finally(()=>setFetching(false))
