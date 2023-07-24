@@ -29,7 +29,7 @@ router.post('/createOrder',
             const {adress, fio, phone, type, mark, timeInUse, comment, urgency, time, imgs} =req.body
             let user =req.body.user ? req.body.user: null
             console.log(adress, fio, phone, type, mark, timeInUse, comment, urgency, time, imgs, user)
-            const order = new Order({adress, phone, fio, type, mark, timeInUse, comment, urgency, time, imgs, user,chek:false,status:"Новая",history:[]})
+            const order = new Order({adress, phone, fio, type, mark, timeInUse, comment, urgency, time, imgs, user,chek:false,status:"Новая",history:[],createTime:new Date()})
             console.log(order)
             await order.save()
             const fUser = await User.findOne({_id:req.body.user})
@@ -58,11 +58,12 @@ router.post('/redactOrder',
             if (!errors.isEmpty()) {
                 return res.status(400).json({message:'Uncorrect request', errors})
             }
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             console.log(req.body.imgs)
-            console.log(req.body)
-            const newOrder = await Order.updateOne({_id: req.body.id},{$set:{adress:req.body.adress, fio:req.body.fio, phone:req.body.phone, type:req.body.type, mark:req.body.mark, timeInUse:req.body.timeInUse, comment:req.body.comment, urgency:req.body.urgency, time:req.body.time, imgs:req.body.imgs,chek:false}})
+            console.log(req.body.privateComment)
+            const newOrder = await Order.updateOne({_id: req.body.id},{$set:{adress:req.body.adress, fio:req.body.fio, phone:req.body.phone, type:req.body.type, mark:req.body.mark, timeInUse:req.body.timeInUse, comment:req.body.comment, urgency:req.body.urgency, time:req.body.time, imgs:req.body.imgs,chek:false,privateComment:req.body.privateComment}})
             console.log(newOrder)
-
+            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             return res.json({message:"Product was redacted"})
         }catch (e){
             console.log(e)
@@ -149,24 +150,51 @@ router.get('/getOrders',authMiddleware,
                     console.log("Значение не соответствует ни одному из вариантов");
                     break;
             }
-            query = {
-                $and: [
-                    query,
+            let moreQuery
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            console.log(req.query.adress)
+            console.log(req.query.fio)
+            console.log(req.query.mark)
+            console.log(req.query.phone)
+            console.log(req.query.typs)
+            console.log(req.query.privateComment)
+            console.log(req.query.responsible)
+            //console.log(req.query.filt)
+            {
+                console.log("()(()()()(())((")
+                moreQuery =
                     {
-                        $or: [
-                            { adress: { $regex: req.query.all, $options: "i" } },
-                            { fio: { $regex: req.query.all, $options: "i" } },
-                            { phone: { $regex: req.query.all, $options: "i" } },
-                            { type: { $regex: req.query.all, $options: "i" } },
-                            { mark: { $regex: req.query.all, $options: "i" } },
-                            { timeInUse: { $regex: req.query.all, $options: "i" } },
-                            { comment: { $regex: req.query.all, $options: "i" } },
-                            { status: { $regex: req.query.all, $options: "i" } },
-                            { responsible: { $regex: req.query.all, $options: "i" } }
-                        ]
+
                     }
-                ]
-            };
+
+                query = {
+                    $and: [
+                        {
+                        adress: {$regex: req.query.adress, $options: "i"},
+                        fio: {$regex: req.query.fio, $options: "i"},
+                        mark: {$regex: req.query.mark, $options: "i"},
+                        phone: {$regex: req.query.phone, $options: "i"},
+                        type: {$regex: req.query.typs, $options: "i"},
+                        responsible: {$regex: req.query.responsible, $options: "i"}
+                        },
+                        query,
+                        {
+                            $or: [
+                                {adress: {$regex: req.query.all, $options: "i"}},
+                                {fio: {$regex: req.query.all, $options: "i"}},
+                                {phone: {$regex: req.query.all, $options: "i"}},
+                                {type: {$regex: req.query.all, $options: "i"}},
+                                {mark: {$regex: req.query.all, $options: "i"}},
+                                {timeInUse: {$regex: req.query.all, $options: "i"}},
+                                {comment: {$regex: req.query.all, $options: "i"}},
+                                {status: {$regex: req.query.all, $options: "i"}},
+                                {responsible: {$regex: req.query.all, $options: "i"}}
+                            ]
+                        }
+                    ]
+                };
+            }
+            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             const count = await Order.find(query).count()
             const pageCount = Math.ceil(count / ItemsPerPage)
 
@@ -183,8 +211,11 @@ router.get('/getOrders',authMiddleware,
             console.log(req.query);
             console.log(req.query.all)
             console.log(req.user.id);
-
+            if (fUser.role!='client')
                 products = await Order.find(query).skip(skip>=0?skip:0).limit(skip>=0?ItemsPerPage:ItemsPerPage+skip)
+            else
+                products= await Order.find(query, { privateComment: 0 }).skip(skip>=0?skip:0).limit(skip>=0?ItemsPerPage:ItemsPerPage+skip)
+
             console.log(query,products)
             return res.json({pagination:{count,pageCount},products})
         } catch (e) {
