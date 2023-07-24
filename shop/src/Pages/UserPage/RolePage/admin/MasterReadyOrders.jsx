@@ -31,7 +31,7 @@ export default function MasterReadyOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,5,all)
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,5,all,{})
                 getMasters(masters,setMasters)
             }
         }

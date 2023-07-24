@@ -26,6 +26,7 @@ const Order = () => {
     const [time, setTime] = useState(Date.now+1)
     const [imgs, setImgs] = useState([])
     const [user, setUser] = useState('')
+    const [privateComment, setPrivateComment] = useState("")
     const currentUser=useSelector(state =>state.user.currentUser)
     const [urgency,setUrgency] = useState(false)
 
@@ -107,7 +108,7 @@ const Order = () => {
         setInputEnabledUrgency(false)
     }
     function save() {
-        redactOrder(id,adress, fio, phone, type, mark, timeInUse, comment, urgency, new Date(time).toISOString(), imgs)
+        redactOrder(id,adress, fio, phone, type, mark, timeInUse, comment, urgency, new Date(time).toISOString(), privateComment, imgs)
     }
     function redact(atribute,first,second)
     {
@@ -123,7 +124,7 @@ const Order = () => {
 
     useEffect(() => {
         //dispatch(getChats(user))
-        dispatch(getOrder(id,setMainImg, setAdress, setFio,setPhone, setType, setMark, setTimeInUse, setComment, setTime, setImgs, setUrgency,setUser,setMessages,setChat))
+        dispatch(getOrder(id,setMainImg, setAdress, setFio,setPhone, setType, setMark, setTimeInUse, setComment, setTime, setImgs, setUrgency,setUser,setMessages,setChat,setPrivateComment))
     }, [])
     return (
         <div>
@@ -281,7 +282,18 @@ const Order = () => {
                                         {inputEnabledComment ? "Выключить ввод" : "Включить ввод"}
                                     </button>
                                 </div>
-
+                                {privateComment &&
+                                <div className="fullDescription form-inpt">
+                                    <label>Приватный комментарий</label>
+                                    <textarea
+                                        type="text"
+                                        className="input"
+                                        value={privateComment}
+                                        onChange={(e) => setPrivateComment(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                }
                                 <div className="Save-btn">
                                     <a>
                                     <button className={"btnSave"}

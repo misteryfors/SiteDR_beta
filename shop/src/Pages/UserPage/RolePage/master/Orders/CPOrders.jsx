@@ -31,7 +31,7 @@ export default function CPOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,3,all)
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,3,all,{})
                 getMasters(masters,setMasters)
             }
         }

@@ -62,7 +62,7 @@ const Orders=({product,setProducts,products})=>{
                             <div className={'name-desc adress'}>Адресс: <span>{product.adress ? product.adress : 'БезАдресса'}</span></div>
                             <div className={'price-desc'}>ФИО: <span>{product.fio ? product.fio: 'БезФИО'}</span></div>
                             <div className={'name-desc break-all'}>Id: <span>{product._id}</span></div>
-                            <div className={'date-desc'}>Удобное время для прибытия:<span>{product.time.replace("Z", "").slice(0, -4).replace("T"," ")}</span></div>
+                            <div className={'date-desc'}>Удобное время для прибытия:<span>{product.time?.replace("Z", "").slice(0, -4).replace("T"," ")}</span></div>
                             <div className={'short-desc'}>Телефон: {product.phone ? product.phone: 'без телефона'}</div>
                         </div>
                         

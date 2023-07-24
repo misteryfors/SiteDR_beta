@@ -30,7 +30,7 @@ export default function CPClientsOrders(){
         {
             if (fetching) {
 
-                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,2,all)
+                getOrders(currentPage, setCurrenPage, setFetching, products, setProducts, setCountPage, countPage,true,2,all,{})
 
             }
         }
