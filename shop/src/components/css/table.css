@@ -1,0 +1,27 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Set fixed width for each column */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 30%; /* Adjust the percentage value as per your requirement */
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 20%; /* Adjust the percentage value as per your requirement */
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 50%; /* Adjust the percentage value as per your requirement */
+}

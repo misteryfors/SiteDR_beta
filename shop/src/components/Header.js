@@ -53,6 +53,12 @@ export default function Header(){
                 </div>
             </NavLink>
 
+            <NavLink className="HeaderNav" to={'/priceList'}>
+                <div id='Repair2'>
+                    Лист расценок
+                </div>
+            </NavLink>
+
             <div className='HeaderWrapper'></div>
 
            
@@ -92,6 +98,11 @@ export default function Header(){
                     <NavLink className="HeaderNav" to={'/NewOrder'}>
                         <div id='Repair'>
                             Заказать Ремонт
+                        </div>
+                    </NavLink>
+                    <NavLink className="HeaderNav" to={'/priceList'}>
+                        <div id='Repair2'>
+                            Цены
                         </div>
                     </NavLink>
                 </div>
