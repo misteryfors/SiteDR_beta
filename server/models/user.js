@@ -9,7 +9,8 @@ const User = new Schema({
     name:{type: String},
     telegram:{type: String},
     confirmed:{type:Boolean},
-    notice:{type: String}
+    notice:{type: String},
+    coupons:[{type:ObjectId, coupon:'User'}]
 })
 
 module.exports = model('User', User)
