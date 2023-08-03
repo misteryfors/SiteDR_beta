@@ -17,7 +17,7 @@ const corsMiddleware = require('./middleware/cors.middleware')
 const pathMiddleware = require('./middleware/path.middleware')
 const path=require('path')
 const tgController = require('./controllers/telegramController.js')
-tgController.on()
+
 
 app.use(fileUpload({}))
 app.use(corsMiddleware)
