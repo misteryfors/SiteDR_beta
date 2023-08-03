@@ -29,7 +29,7 @@ app.use("/api/prod",prodRouter)
 app.use("/api/order",orderRouter)
 app.use("/api/chat",chatRouter)
 app.use("/api/revw",reviewRouter)
-app.use("/api/list",priceListRouter)
+app.use("/api/list",priceListRouter)    
 
 const host = '127.0.0.1';
 const port = 8443;
