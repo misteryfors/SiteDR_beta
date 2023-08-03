@@ -21,6 +21,7 @@ import {Slider} from "./Pages/slider";
 import CPOrders from "./Pages/UserPage/RolePage/master/Orders/CPOrders";
 import {CPClientsOrders} from "./Pages/UserPage/RolePage/client/Orders/CPClientsOrders";
 import {CPMastersOrders} from "./Pages/UserPage/RolePage/master/Orders/CPMastersOrders";
+import {MasterReadyOrders} from "./Pages/UserPage/RolePage/admin/MasterReadyOrders";
 import {Helmet} from "react-helmet";
 import {ConfirmPage, confirmPage} from "./Pages/auntification/confirm";
 import {MoreInfoPage} from "./Pages/moreInfo/moreInfo";
@@ -29,7 +30,8 @@ import AllOrders from "./Pages/UserPage/RolePage/admin/AllOrders";
 import ReadyOrders from "./Pages/UserPage/RolePage/admin/ReadyOrders";
 import NewOrders from "./Pages/UserPage/RolePage/admin/NewOrders";
 import {ConfirmAuthPage} from "./Pages/order/confirm";
-
+import {PriceList} from "./Pages/priceList/priceList";
+import CPPriceList from "./Pages/UserPage/RolePage/mainAdmin/priceList/CPPriceList"
 export default function Routs(){
     const isAuth =useSelector(state =>state.user.isAuth)
     const role =useSelector(state =>state.user.currentUser.role)
@@ -46,6 +48,7 @@ export default function Routs(){
                 <Route index element={<InfoPage/>}/>
                 <Route path="info" element={<MoreInfoPage/>}/>
                 <Route path="shop" element={<MainPage/>}/>
+                <Route path="priceList" element={<PriceList/>}/>
                 <Route path="confirm/:id" element={<ConfirmPage/>}/>
                 <Route path="shop" element={<MainPage/>}>
                     <Route index element={<MainPage/>}/>
@@ -67,6 +70,8 @@ export default function Routs(){
                         <Route path="newOrders" element={<NewOrders/>}/>
                         <Route path="adminPanel" element={<AdminPanel/>}/>
                         <Route path="myOrders" element={<CPMastersOrders/>}/>
+                        <Route path="masterReadyOrders" element={<MasterReadyOrders/>}/>
+                        <Route path="redactPriceList" element={<CPPriceList/>}/>
                     </Route>
                     :role==="master" ?
                         <Route path="/User" element={<MasterPage/>}>
@@ -94,6 +99,7 @@ export default function Routs(){
                                 <Route path="newOrders" element={<Navigate to="/login" />}/>
                                 <Route path="adminPanel" element={<Navigate to="/login" />}/>
                                 <Route path="myOrders" element={<Navigate to="/login" />}/>
+                                <Route path="masterReadyOrders" element={<Navigate to="/login" />}/>
                             </Route>
                 }
                 <Route path="Order/:id" element={<Order/>}/>

@@ -26,6 +26,7 @@ const MainAdminPage = () => {
                 <div className="niggers">
                     <div className="bigger">
                         <NavLink to="profile"><button className={"MainButton"}><p>Профиль</p></button></NavLink>
+                        <NavLink to="redactPrice"><button className={"MainButton"}><p>Прайс лист</p></button></NavLink>
                         <NavLink to="chats"><button className={"MainButton"}><p>Чаты</p></button></NavLink>
                         <NavLink to="products"><button className={"MainButton"}><p>Продукты</p></button></NavLink>
                         <NavLink to="adminPanel"><button className={"MainButton"}><p>Добавить мастера</p></button></NavLink>
